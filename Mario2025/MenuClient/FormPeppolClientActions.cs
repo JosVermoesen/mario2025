@@ -4,7 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net.Http;
+using System.Text;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace MarioApp.MarioMenu.Actions
 {
@@ -25,26 +27,13 @@ namespace MarioApp.MarioMenu.Actions
             RadioButtonGetReceived.Checked = true;
             TextBoxLegalEntityId.Text = ""; // Default to empty to enable country/scheme/identifier fields
 
-            // Ensure events are hooked up if you didn't use the Designer
-            this.DragEnter += TabSendDocument_DragEnter;
-            this.DragDrop += TabSendDocument_DragDrop;
-            this.RadioButtonGetReceived.Checked = true;
             FillListPeppolToSend();
-        }
-
-        private void TabSendDocument_DragEnter(object sender, DragEventArgs e)
-        {
-            // Only allow file drops
-            if (e.Data.GetDataPresent(DataFormats.FileDrop))
-                e.Effect = DragDropEffects.Copy;
-            else
-                e.Effect = DragDropEffects.None;
         }
 
         private void FillListPeppolToSend()
         {
             string folderPath = SharedGlobals.MimDataLocation + "\\" + SharedGlobals.ActiveCompany + "\\peppol\\out";
-            
+
             if (Directory.Exists(folderPath))
             {
                 string[] xmlFiles = Directory.GetFiles(folderPath, "*.xml");
@@ -57,24 +46,6 @@ namespace MarioApp.MarioMenu.Actions
             {
                 MessageBox.Show("Er zijn geen te verzenden documenten voor bedrijf " + SharedGlobals.ActiveCompany);
                 ListBoxDocumentsToSend.Visible = false;
-            }
-        }
-
-        private void TabSendDocument_DragDrop(object sender, DragEventArgs e)
-        {
-            // Use pattern matching to simplify the type check and cast
-            if (e.Data is DataObject dataObject && dataObject.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
-            {
-                // Example 1: Open each file with its default program
-                // foreach (var file in files)
-                //     Process.Start(new ProcessStartInfo(file) { UseShellExecute = true });
-
-                // Example 2: Load the first file’s text into a TextBox
-                if (File.Exists(files[0]))
-                {
-                    // Assuming you have a TextBox named LabelFile and LabelInvoiceId, LabelIssueDate
-                    LabelFile.Text = files[0];
-                }
             }
         }
 
@@ -174,6 +145,31 @@ namespace MarioApp.MarioMenu.Actions
             }
 
         }
+        private void ButtonCheckFile_Click(object sender, EventArgs e)
+        {
+
+
+
+            string filePath = LabelFile.Text.Trim();
+            string extension = Path.GetExtension(filePath).ToLowerInvariant();
+            if (extension != ".xml") // && extension != ".ubl")
+            {
+                // Show a message box if the file is not a valid UBL XML file
+                MessageBox.Show("Dit is geen geldig UBL XML bestand");
+                ButtonSendUblDocument.Enabled = false; // Disable the button if the file is not valid
+                return;
+            }
+            else
+            {
+                // HandleUblDocument(filePath);
+                ReadUBLInvoice(filePath);
+
+
+                // If the file is valid, enable the button
+                ButtonSendUblDocument.Enabled = true;
+                ToolStripStatusLabel.Text = "Bestand is een geldig UBL XML bestand.";
+            }
+        }
 
         private void DoPopUpDataGridJsonData(string messageAsJson)
         {
@@ -270,8 +266,8 @@ namespace MarioApp.MarioMenu.Actions
                 // If no Legal Entity ID is provided, set default values for Belgium
                 TextBoxCountryCode.Text = "BE"; // Default to Belgium if no Legal Entity ID is provided                                
                 TextBoxRegScheme.Text = "0208"; // Default to 0208 scheme for Belgium  
-                TextBoxRegIdentifier.Text = "0440058217"; // Default to a common identifier for Belgium
-                TextBoxSupportedDocument.Text = "PEPPOL_BIS_BILLING_UBL_INVOICE_V3"; // Default to UBL Invoice for Belgium            
+                TextBoxRegIdentifier.Text = SharedGlobals.CompanyKBONumber; // Default to a common identifier for Belgium
+                TextBoxSupportedDocument.Text = "UBL_BE_INVOICE_3_0"; // Default to UBL Invoice for Belgium            
                 TextBoxLegalEntityId.Text = ""; // Default Legal Entity ID for Belgium
 
                 TextBoxRegIdentifier.Enabled = true; // Enable the registration identifier field
@@ -299,7 +295,7 @@ namespace MarioApp.MarioMenu.Actions
 
         private void ButtonShowSharedGlobals_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(                
+            MessageBox.Show(
                 $"Naam Bedrijf (KBO): {SharedGlobals.CompanyName}\n" +
                 $"Adres: {SharedGlobals.CompanyAddress}\n" +
                 $"Postcode en Plaats: {SharedGlobals.CompanyPostalCodeAndCity}\n" +
@@ -314,11 +310,219 @@ namespace MarioApp.MarioMenu.Actions
                 // $"DbJet Provider: {SharedGlobals.DbJetProvider}\n" +
                 $"Mapnummer Actief Bedrijf: {SharedGlobals.ActiveCompany}\n" +
                 $"Inhoudsopgave Mar Mdv Bestand: {SharedGlobals.MarntMdvLocation}\n" +
-                $"Inhoudsopgave Mar Data: {SharedGlobals.MimDataLocation}\n",                
+                $"Inhoudsopgave Mar Data: {SharedGlobals.MimDataLocation}\n",
                 "Variabele gegevens van actief bedrijf",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
 
+        }
+
+        private static void ReadUBLInvoice(string filePath)
+        {
+            var xmlDoc = new XmlDocument();
+            try
+            {
+                xmlDoc.Load(filePath);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading XML: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            var ns = new XmlNamespaceManager(xmlDoc.NameTable);
+            ns.AddNamespace("cbc", "urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2");
+            ns.AddNamespace("cac", "urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2");
+
+            var sb = new StringBuilder();
+
+            // UBL Version
+            var ublVersionNode = xmlDoc.SelectSingleNode("//cbc:UBLVersionID", ns);
+            sb.AppendLine("UBL VersionID: " + (ublVersionNode?.InnerText ?? "not found"));
+
+            // Document ID
+            var invoiceIdNode = xmlDoc.SelectSingleNode("//cbc:ID", ns);
+            sb.AppendLine("Document ID: " + (invoiceIdNode?.InnerText ?? "not found"));
+
+            // IssueDate
+            var issueDateNode = xmlDoc.SelectSingleNode("//cbc:IssueDate", ns);
+            sb.AppendLine("IssueDate: " + (issueDateNode?.InnerText ?? "not found"));
+
+            // DueDate
+            var dueDateNode = xmlDoc.SelectSingleNode("//cbc:DueDate", ns);
+            sb.AppendLine("DueDate: " + (dueDateNode?.InnerText ?? "not found"));
+
+            // InvoiceTypeCode
+            var invTypeNode = xmlDoc.SelectSingleNode("//cbc:InvoiceTypeCode", ns);
+            if (invTypeNode != null)
+            {
+                var invoiceTypeCode = invTypeNode.InnerText;
+                var listID = invTypeNode.Attributes?["listID"]?.Value ?? "";
+                sb.AppendLine("invoiceTypeCode: " + invoiceTypeCode);
+                sb.AppendLine("invoice listID: " + listID);
+            }
+            else
+            {
+                MessageBox.Show("InvoiceTypeCode element not found.");
+            }
+
+            // OrderReference
+            var orderList = xmlDoc.SelectNodes("//cac:OrderReference", ns);
+            if (orderList != null)
+            {
+                foreach (XmlNode ordNode in orderList)
+                {
+                    var orderId = ordNode.SelectSingleNode("cbc:ID", ns)?.InnerText ?? "Order ID: not available";
+                    sb.AppendLine("Order ID: " + orderId);
+                }
+            }
+            MessageBox.Show(sb.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // Supplier info
+            var supplierNode = xmlDoc.SelectSingleNode("//cac:AccountingSupplierParty/cac:Party", ns);
+            if (supplierNode != null)
+            {
+                var msg = new StringBuilder();
+                msg.AppendLine("Supplier info");
+                msg.AppendLine("-------------");
+                msg.AppendLine("endpointOndernemingsnummer " + NodeText(supplierNode, "cbc:EndpointID", ns));
+                msg.AppendLine("supplierID: " + NodeText(supplierNode, "cac:PartyIdentification/cbc:ID", ns));
+                msg.AppendLine("tradingName: " + NodeText(supplierNode, "cac:PartyName/cbc:Name", ns));
+                msg.AppendLine("street: " + NodeText(supplierNode, "cac:PostalAddress/cbc:StreetName", ns));
+                msg.AppendLine("city: " + NodeText(supplierNode, "cac:PostalAddress/cbc:CityName", ns));
+                msg.AppendLine("postalZone: " + NodeText(supplierNode, "cac:PostalAddress/cbc:PostalZone", ns));
+                msg.AppendLine("countryCode: " + NodeText(supplierNode, "cac:PostalAddress/cac:Country/cbc:IdentificationCode", ns));
+                msg.AppendLine("vatNumber: " + NodeText(supplierNode, "cac:PartyTaxScheme/cbc:CompanyID", ns));
+                MessageBox.Show(msg.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("No AccountingSupplierParty element found.");
+            }
+
+            // Customer info
+            var custNode = xmlDoc.SelectSingleNode("//cac:AccountingCustomerParty", ns);
+            if (custNode != null)
+            {
+                var msg = new StringBuilder();
+                msg.AppendLine("Customer info");
+                msg.AppendLine("-------------");
+                msg.AppendLine("custAssignedAccountID: " + NodeText(custNode, "cbc:CustomerAssignedAccountID", ns));
+                msg.AppendLine("custEndpointID: " + NodeText(custNode, "cac:Party/cbc:EndpointID", ns));
+                msg.AppendLine("custName: " + NodeText(custNode, "cac:Party/cac:PartyName/cbc:Name", ns));
+                msg.AppendLine("custStreet: " + NodeText(custNode, "cac:Party/cac:PostalAddress/cbc:StreetName", ns));
+                msg.AppendLine("custCity: " + NodeText(custNode, "cac:Party/cac:PostalAddress/cbc:CityName", ns));
+                msg.AppendLine("custPostalZone: " + NodeText(custNode, "cac:Party/cac:PostalAddress/cbc:PostalZone", ns));
+                msg.AppendLine("custCountryCode: " + NodeText(custNode, "cac:Party/cac:PostalAddress/cac:Country/cbc:IdentificationCode", ns));
+                msg.AppendLine("custTaxID: " + NodeText(custNode, "cac:Party/cac:PartyTaxScheme/cbc:CompanyID", ns));
+                msg.AppendLine("custTaxScheme: " + NodeText(custNode, "cac:Party/cac:PartyTaxScheme/cac:TaxScheme/cbc:ID", ns));
+                MessageBox.Show(msg.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("No AccountingCustomerParty element found.");
+            }
+
+            // PaymentMeans
+            var pmNodes = xmlDoc.SelectNodes("//cac:PaymentMeans", ns);
+            if (pmNodes != null && pmNodes.Count > 0)
+            {
+                var msg = new StringBuilder();
+                msg.AppendLine("PaymentMeans");
+                msg.AppendLine("------------");
+                foreach (XmlNode pmNode in pmNodes)
+                {
+                    msg.AppendLine("PaymentMeansCode: " + NodeText(pmNode, "cbc:PaymentMeansCode", ns));
+                    msg.AppendLine("PaymentID: " + NodeText(pmNode, "cbc:PaymentID", ns));
+                    msg.AppendLine("Payee IBAN: " + NodeText(pmNode, "cac:PayeeFinancialAccount/cbc:ID", ns));
+                    msg.AppendLine("Account Name: " + NodeText(pmNode, "cac:PayeeFinancialAccount/cbc:Name", ns));
+                    msg.AppendLine("BIC/Branch ID: " + NodeText(pmNode, "cac:PayeeFinancialAccount/cac:FinancialInstitutionBranch/cbc:ID", ns));
+                    msg.AppendLine();
+                    msg.AppendLine("Card account (if present)");
+                    msg.AppendLine("Card Account ID: " + NodeText(pmNode, "cac:CardAccount/cbc:ID", ns));
+                    msg.AppendLine("Card Account Name: " + NodeText(pmNode, "cac:CardAccount/cbc:Name", ns));
+                    msg.AppendLine();
+                    msg.AppendLine("Direct debit mandate (if present)");
+                    msg.AppendLine("Mandate ID: " + NodeText(pmNode, "cac:PaymentMandate/cbc:ID", ns));
+                    msg.AppendLine("Mandate Date: " + NodeText(pmNode, "cac:PaymentMandate/cbc:PaymentMandateDate", ns));
+                }
+                MessageBox.Show(msg.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("No PaymentMeans element found.");
+            }
+
+            // TaxTotal
+            var msgTax = new StringBuilder();
+            msgTax.AppendLine("TaxTotal");
+            msgTax.AppendLine("--------");
+            var taxAmountEl = xmlDoc.SelectSingleNode("//cac:TaxTotal/cbc:TaxAmount", ns);
+            var currencyID = taxAmountEl?.Attributes?["currencyID"]?.Value ?? "";
+            if (taxAmountEl != null && string.IsNullOrEmpty(currencyID))
+            {
+                MessageBox.Show("Attribute currencyID is missing on <cbc:TaxAmount>");
+            }
+
+            var taxTotals = xmlDoc.SelectNodes("//cac:TaxTotal", ns);
+            if (taxTotals != null)
+            {
+                foreach (XmlNode taxTotalElem in taxTotals)
+                {
+                    var ttAmount = taxTotalElem.SelectSingleNode("cbc:TaxAmount", ns)?.InnerText ?? "";
+                    msgTax.AppendLine($"TaxTotal: {ttAmount} {currencyID}");
+
+                    var subtotals = taxTotalElem.SelectNodes("cac:TaxSubtotal", ns);
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+                    foreach (XmlNode subElem in subtotals)
+                    {
+                        msgTax.AppendLine();
+                        msgTax.AppendLine("SubDetail");
+                        msgTax.AppendLine("TaxableAmount: " + NodeText(subElem, "cbc:TaxableAmount", ns));
+                        msgTax.AppendLine("TaxAmount: " + NodeText(subElem, "cbc:TaxAmount", ns));
+                        msgTax.AppendLine("Percent: " + NodeText(subElem, "cac:TaxCategory/cbc:Percent", ns) + "%");
+                        msgTax.AppendLine();
+                    }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+                }
+                MessageBox.Show(msgTax.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            // LegalMonetaryTotal
+            var msgMoney = new StringBuilder();
+            msgMoney.AppendLine("LegalMonetaryTotal");
+            msgMoney.AppendLine("------------------");
+            var moneyTotalEl = xmlDoc.SelectSingleNode("//cac:LegalMonetaryTotal", ns);
+            if (moneyTotalEl != null)
+            {
+                msgMoney.AppendLine("LineExtensionAmount: " + NodeText(moneyTotalEl, "cbc:LineExtensionAmount", ns));
+                msgMoney.AppendLine("TaxExclusiveAmount: " + NodeText(moneyTotalEl, "cbc:TaxExclusiveAmount", ns));
+                msgMoney.AppendLine("TaxInclusiveAmount: " + NodeText(moneyTotalEl, "cbc:TaxInclusiveAmount", ns));
+                msgMoney.AppendLine("PayableAmount: " + NodeText(moneyTotalEl, "cbc:PayableAmount", ns) + $" ({currencyID})");
+                MessageBox.Show(msgMoney.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
+            // InvoiceLines
+            var msgLines = new StringBuilder();
+            var invoiceLines = xmlDoc.SelectNodes("//cac:InvoiceLine", ns);
+            if (invoiceLines != null)
+            {
+                foreach (XmlNode lineNode in invoiceLines)
+                {
+                    var desc = NodeText(lineNode, ".//cbc:Description", ns);
+                    var qty = NodeText(lineNode, ".//cbc:InvoicedQuantity", ns);
+                    var price = NodeText(lineNode, ".//cbc:PriceAmount", ns);
+                    msgLines.AppendLine($"Item: {desc}, Quantity: {qty}, Price: {price}");
+                }
+                MessageBox.Show(msgLines.ToString(), "Testing UBL DATA versie 0.01", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        // Helper for safe node text extraction
+        private static string NodeText(XmlNode parentNode, string xpath, XmlNamespaceManager ns)
+        {
+            var node = parentNode.SelectSingleNode(xpath, ns);
+            return node?.InnerText.Trim() ?? "";
         }
 
         public void GetJournalRS()
@@ -336,13 +540,24 @@ namespace MarioApp.MarioMenu.Actions
             JournalRS.Open(sSQL, connectionString, CursorTypeEnum.adOpenForwardOnly, LockTypeEnum.adLockReadOnly);
             if (JournalRS.EOF)
             {
-                MessageBox.Show ("0");
+                MessageBox.Show("0");
             }
             else
             {
-                MessageBox.Show (JournalRS.RecordCount.ToString());                
+                MessageBox.Show(JournalRS.RecordCount.ToString());
             }
             Cursor.Current = Cursors.Default;
+        }
+
+        private void ListBoxDocumentsToSend_Click(object sender, EventArgs e)
+        {
+            ButtonSendUblDocument.Enabled = false; // Disable the button when selecting a new file
+            LabelFile.Text = "";
+
+            if (ListBoxDocumentsToSend.SelectedItem != null)
+            {
+                LabelFile.Text  = ListBoxDocumentsToSend.SelectedItem.ToString();
+            }
         }
     }
 }

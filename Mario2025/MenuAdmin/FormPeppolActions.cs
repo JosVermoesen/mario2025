@@ -1,16 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -326,6 +321,13 @@ namespace MarioApp.MarioMenu.Admin
 
         async private void ButtonEntityNew_Click(object sender, EventArgs e)
         {
+            if (!RadioButtonBothSchemes.Checked && !RadioButtonOnlyScheme0208.Checked)
+                {
+                ToolStripStatusLabel.Text = "Kies een registratie schema.";
+                MessageBox.Show("Selecteer de nodige registratie schemas.", "Foutmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             ToolStripStatusLabel.Text = "Bezig...";
 
             string name = TextBoxCompanyName.Text;
@@ -340,17 +342,19 @@ namespace MarioApp.MarioMenu.Admin
             string identifier9925 = TextBoxIdentifier.Text; // Full VAT number, e.g., "BE0421132626"
             string identifier0208 = TextBoxIdentifier.Text.Substring(2); // Remove country code for identifier, e.g., "0421132626"
 
-            // Build the request using your Postman example values
-            var entity = new CreateLegalEntityModel
+            if (RadioButtonBothSchemes.Checked)
             {
-                LegalEntityDetails = new LegalEntityDetails
+                // Build the request using your Postman example values
+                var entity = new CreateLegalEntityModel
                 {
-                    PublishInPeppolDirectory = true,
-                    Name = name,
-                    CountryCode = countryCode,
-                    GeographicalInformation = geographicalInformation,
-                    WebsiteUrl = websiteUrl,
-                    Contacts = new List<Contact>
+                    LegalEntityDetails = new LegalEntityDetails
+                    {
+                        PublishInPeppolDirectory = true,
+                        Name = name,
+                        CountryCode = countryCode,
+                        GeographicalInformation = geographicalInformation,
+                        WebsiteUrl = websiteUrl,
+                        Contacts = new List<Contact>
                     {
                         new Contact
                         {
@@ -360,9 +364,9 @@ namespace MarioApp.MarioMenu.Admin
                             Email = contactEmail
                         }
                     },
-                    AdditionalInformation = additionalInformation
-                },
-                PeppolRegistrations = new List<PeppolRegistration>
+                        AdditionalInformation = additionalInformation
+                    },
+                    PeppolRegistrations = new List<PeppolRegistration>
                 {
                     new PeppolRegistration
                     {
@@ -401,23 +405,85 @@ namespace MarioApp.MarioMenu.Admin
                         PublishInSmp = true
                     }
                 }
-            };
+                };
 
-            try
+                try
+                {
+                    var result = await AdemicoClient.CreateOrRegisterLegalEntityAsync(request: entity);
+
+                    ToolStripStatusLabel.Text = $"Status: {(int)result.StatusCode} {result.StatusCode}";
+                    MessageBox.Show($"Response: {result.ResponseBody}", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception)
+                {
+                    ToolStripStatusLabel.Text = "Error during entity creation.";
+                }
+
+                ButtonEntityNew.Enabled = false; // Disable the button after creating the entity
+                TextBoxCompanyName.Clear();
+                TextBoxGeographicalInformation.Clear();
+            } else
             {
-                var result = await AdemicoClient.CreateOrRegisterLegalEntityAsync(request: entity);
+                // Build the request using your Postman example values
+                var entity = new CreateLegalEntityModel
+                {
+                    LegalEntityDetails = new LegalEntityDetails
+                    {
+                        PublishInPeppolDirectory = true,
+                        Name = name,
+                        CountryCode = countryCode,
+                        GeographicalInformation = geographicalInformation,
+                        WebsiteUrl = websiteUrl,
+                        Contacts = new List<Contact>
+                    {
+                        new Contact
+                        {
+                            ContactType = contactType,
+                            Name = contactName,
+                            PhoneNumber = contactPhoneNumber,
+                            Email = contactEmail
+                        }
+                    },
+                        AdditionalInformation = additionalInformation
+                    },
+                    PeppolRegistrations = new List<PeppolRegistration>
+                {
+                    new PeppolRegistration
+                    {
+                        PeppolIdentifier = new PeppolIdentifier
+                        {
+                            Scheme = "0208",
+                                Identifier = identifier0208 // "0421132626"
+                        },
+                        SupportedDocuments = new List<string>
+                        {
+                            "UBL_BE_INVOICE_3_0",
+                            "UBL_BE_CREDIT_NOTE_3_0",
+                            "PEPPOL_BIS_BILLING_UBL_INVOICE_V3",
+                            "PEPPOL_BIS_BILLING_UBL_CREDIT_NOTE_V3",
+                            "PEPPOL_MESSAGE_LEVEL_RESPONSE_TRANSACTION_3_0",
+                            "PEPPOL_INVOICE_RESPONSE_TRANSACTION_3_0"
+                        },
+                        PublishInSmp = true
+                    }
+                }
+                };
+                try
+                {
+                    var result = await AdemicoClient.CreateOrRegisterLegalEntityAsync(request: entity);
 
-                ToolStripStatusLabel.Text = $"Status: {(int)result.StatusCode} {result.StatusCode}";
-                MessageBox.Show($"Response: {result.ResponseBody}", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception)
-            {
-                ToolStripStatusLabel.Text = "Error during entity creation.";
-            }
+                    ToolStripStatusLabel.Text = $"Status: {(int)result.StatusCode} {result.StatusCode}";
+                    MessageBox.Show($"Response: {result.ResponseBody}", "Result", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception)
+                {
+                    ToolStripStatusLabel.Text = "Error during entity creation.";
+                }
 
-            ButtonEntityNew.Enabled = false; // Disable the button after creating the entity
-            TextBoxCompanyName.Clear();
-            TextBoxGeographicalInformation.Clear();
+                ButtonEntityNew.Enabled = false; // Disable the button after creating the entity
+                TextBoxCompanyName.Clear();
+                TextBoxGeographicalInformation.Clear();
+            }                            
         }
 
         async private void ButtonGetUBLDocument_Click(object sender, EventArgs e)

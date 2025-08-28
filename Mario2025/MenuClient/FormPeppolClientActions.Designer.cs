@@ -313,8 +313,6 @@
             this.TabSendDocument.TabIndex = 2;
             this.TabSendDocument.Text = "Document Verzenden";
             this.TabSendDocument.UseVisualStyleBackColor = true;
-            this.TabSendDocument.DragDrop += new System.Windows.Forms.DragEventHandler(this.TabSendDocument_DragDrop);
-            this.TabSendDocument.DragEnter += new System.Windows.Forms.DragEventHandler(this.TabSendDocument_DragEnter);
             // 
             // ListBoxDocumentsToSend
             // 
@@ -323,16 +321,15 @@
             this.ListBoxDocumentsToSend.Name = "ListBoxDocumentsToSend";
             this.ListBoxDocumentsToSend.Size = new System.Drawing.Size(560, 173);
             this.ListBoxDocumentsToSend.TabIndex = 6;
+            this.ListBoxDocumentsToSend.Click += new System.EventHandler(this.ListBoxDocumentsToSend_Click);
             // 
             // LabelFile
             // 
             this.LabelFile.AutoSize = true;
             this.LabelFile.Location = new System.Drawing.Point(8, 16);
             this.LabelFile.Name = "LabelFile";
-            this.LabelFile.Size = new System.Drawing.Size(491, 13);
+            this.LabelFile.Size = new System.Drawing.Size(0, 13);
             this.LabelFile.TabIndex = 5;
-            this.LabelFile.Text = "Sleep een ubl xml bestand naar deze ruimte en klik bestand controleren of kies ui" +
-    "t de lijst te verzenden.";
             this.LabelFile.TextChanged += new System.EventHandler(this.LabelFile_TextChanged);
             // 
             // ButtonSendUblDocument
@@ -354,6 +351,7 @@
             this.ButtonCheckFile.TabIndex = 3;
             this.ButtonCheckFile.Text = "Bestand Controleren";
             this.ButtonCheckFile.UseVisualStyleBackColor = true;
+            this.ButtonCheckFile.Click += new System.EventHandler(this.ButtonCheckFile_Click);
             // 
             // TabReceiveDocument
             // 

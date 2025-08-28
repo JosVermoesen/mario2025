@@ -81,6 +81,8 @@
             this.ButtonEntityNew = new System.Windows.Forms.Button();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.ToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.RadioButtonOnlyScheme0208 = new System.Windows.Forms.RadioButton();
+            this.RadioButtonBothSchemes = new System.Windows.Forms.RadioButton();
             this.TabControlVariousActions.SuspendLayout();
             this.TabActions.SuspendLayout();
             this.TabNotifications.SuspendLayout();
@@ -114,7 +116,7 @@
             this.TabControlVariousActions.Location = new System.Drawing.Point(0, 0);
             this.TabControlVariousActions.Name = "TabControlVariousActions";
             this.TabControlVariousActions.SelectedIndex = 0;
-            this.TabControlVariousActions.Size = new System.Drawing.Size(529, 325);
+            this.TabControlVariousActions.Size = new System.Drawing.Size(529, 342);
             this.TabControlVariousActions.TabIndex = 8;
             // 
             // TabActions
@@ -134,7 +136,7 @@
             this.TabActions.Location = new System.Drawing.Point(4, 22);
             this.TabActions.Name = "TabActions";
             this.TabActions.Padding = new System.Windows.Forms.Padding(3);
-            this.TabActions.Size = new System.Drawing.Size(521, 299);
+            this.TabActions.Size = new System.Drawing.Size(521, 316);
             this.TabActions.TabIndex = 0;
             this.TabActions.Text = "Opzoekingen";
             this.TabActions.UseVisualStyleBackColor = true;
@@ -410,6 +412,8 @@
             // 
             // TabEntities
             // 
+            this.TabEntities.Controls.Add(this.RadioButtonBothSchemes);
+            this.TabEntities.Controls.Add(this.RadioButtonOnlyScheme0208);
             this.TabEntities.Controls.Add(this.ButtonOnlyRequired);
             this.TabEntities.Controls.Add(this.TextBoxPhone);
             this.TabEntities.Controls.Add(this.label13);
@@ -431,7 +435,7 @@
             this.TabEntities.Controls.Add(this.ButtonEntityNew);
             this.TabEntities.Location = new System.Drawing.Point(4, 22);
             this.TabEntities.Name = "TabEntities";
-            this.TabEntities.Size = new System.Drawing.Size(521, 299);
+            this.TabEntities.Size = new System.Drawing.Size(521, 316);
             this.TabEntities.TabIndex = 5;
             this.TabEntities.Text = "Entiteiten";
             this.TabEntities.UseVisualStyleBackColor = true;
@@ -439,7 +443,7 @@
             // ButtonOnlyRequired
             // 
             this.ButtonOnlyRequired.Enabled = false;
-            this.ButtonOnlyRequired.Location = new System.Drawing.Point(180, 220);
+            this.ButtonOnlyRequired.Location = new System.Drawing.Point(28, 220);
             this.ButtonOnlyRequired.Name = "ButtonOnlyRequired";
             this.ButtonOnlyRequired.Size = new System.Drawing.Size(111, 45);
             this.ButtonOnlyRequired.TabIndex = 18;
@@ -604,7 +608,7 @@
             // 
             this.StatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripStatusLabel});
-            this.StatusStrip.Location = new System.Drawing.Point(0, 303);
+            this.StatusStrip.Location = new System.Drawing.Point(0, 320);
             this.StatusStrip.Name = "StatusStrip";
             this.StatusStrip.Size = new System.Drawing.Size(529, 22);
             this.StatusStrip.TabIndex = 9;
@@ -616,12 +620,34 @@
             this.ToolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.ToolStripStatusLabel.Text = "Ready";
             // 
+            // RadioButtonOnlyScheme0208
+            // 
+            this.RadioButtonOnlyScheme0208.AutoSize = true;
+            this.RadioButtonOnlyScheme0208.Location = new System.Drawing.Point(180, 234);
+            this.RadioButtonOnlyScheme0208.Name = "RadioButtonOnlyScheme0208";
+            this.RadioButtonOnlyScheme0208.Size = new System.Drawing.Size(79, 17);
+            this.RadioButtonOnlyScheme0208.TabIndex = 19;
+            this.RadioButtonOnlyScheme0208.TabStop = true;
+            this.RadioButtonOnlyScheme0208.Text = "Enkel 0208";
+            this.RadioButtonOnlyScheme0208.UseVisualStyleBackColor = true;
+            // 
+            // RadioButtonBothSchemes
+            // 
+            this.RadioButtonBothSchemes.AutoSize = true;
+            this.RadioButtonBothSchemes.Location = new System.Drawing.Point(280, 234);
+            this.RadioButtonBothSchemes.Name = "RadioButtonBothSchemes";
+            this.RadioButtonBothSchemes.Size = new System.Drawing.Size(91, 17);
+            this.RadioButtonBothSchemes.TabIndex = 20;
+            this.RadioButtonBothSchemes.TabStop = true;
+            this.RadioButtonBothSchemes.Text = "0208 en 9925";
+            this.RadioButtonBothSchemes.UseVisualStyleBackColor = true;
+            // 
             // FormPeppolActions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.ButtonClose;
-            this.ClientSize = new System.Drawing.Size(529, 325);
+            this.ClientSize = new System.Drawing.Size(529, 342);
             this.Controls.Add(this.StatusStrip);
             this.Controls.Add(this.TabControlVariousActions);
             this.Controls.Add(this.ButtonClose);
@@ -702,5 +728,7 @@
         private System.Windows.Forms.TextBox TextBoxPhone;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Button ButtonOnlyRequired;
+        private System.Windows.Forms.RadioButton RadioButtonBothSchemes;
+        private System.Windows.Forms.RadioButton RadioButtonOnlyScheme0208;
     }
 }
