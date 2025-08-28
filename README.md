@@ -14,6 +14,23 @@ Mario stands for M.A.R. Input Output Data transfer of our accounting data to dif
 - These days, MarioApp is a .NET 8 application that can be used to export the Jet Engine database to a sqlserver database.
 - Added functionality from 2025, support for Peppol exchange sending and receiving invoices, credit notes and orders.
 
+## Ademico Peppol API Testing
+
+In the MarioClasses folder you neet for testing to add your secrets in an AdemicoSecrets.cs file like this:
+
+```csharp
+namespace MarioApp.MarioClasses
+{
+    internal class AdemicoSecrets
+    {
+        internal static readonly string ademicoUrl = "https://example.com"; // Replace with the actual URL
+        internal static readonly string accessToken = "your-access-token"; // Replace with the actual access token
+        internal static readonly string username = "your-username"; // Replace with the actual username
+        internal static readonly string password = "your-password"; // Replace with the actual password
+    }
+}
+```
+
 ![MARIO](img/MarioApp.png)
 
 [ClickOnce]: https://clickonce.vsoft.be/mario2025/publish.htm
