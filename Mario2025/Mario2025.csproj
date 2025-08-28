@@ -1,0 +1,357 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\squirrel.windows.2.0.1\build\squirrel.windows.props" Condition="Exists('..\packages\squirrel.windows.2.0.1\build\squirrel.windows.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DB2C0EDE-082E-413F-9167-ACF81AC1302E}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>MarioApp</RootNamespace>
+    <AssemblyName>MarioApp2025</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <PublishUrl>C:\Users\Jos\source\repos\mar\vss\mario2025\Publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <InstallUrl>https://clickonce.vsoft.be/mario2025/</InstallUrl>
+    <ProductName>Mario2025App</ProductName>
+    <PublisherName>Vsoft.be</PublisherName>
+    <SuiteName>marIntegraal.NT</SuiteName>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>D8D3CE6EBA57ECEB4D60A83F3CEFA2AB9D7B3BAC</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Mario2025App_1_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.2.2.5\lib\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video, Version=2.2.5.0, Culture=neutral, PublicKeyToken=cbfb6e07d173c401, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.2.2.5\lib\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow, Version=2.2.5.0, Culture=neutral, PublicKeyToken=61ea4348d43881b7, processorArchitecture=MSIL">
+      <HintPath>..\packages\AForge.Video.DirectShow.2.2.5\lib\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
+    <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.2.0.151\lib\net461\Dapper.dll</HintPath>
+    </Reference>
+    <Reference Include="DeltaCompressionDotNet, Version=1.1.0.0, Culture=neutral, PublicKeyToken=1d14d6e5194e7f4a, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="DeltaCompressionDotNet.MsDelta, Version=1.1.0.0, Culture=neutral, PublicKeyToken=46b2138a390abf55, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.MsDelta.dll</HintPath>
+    </Reference>
+    <Reference Include="DeltaCompressionDotNet.PatchApi, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3e8888ee913ed789, processorArchitecture=MSIL">
+      <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.PatchApi.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.8\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Mono.Cecil, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks, Version=0.11.4.0, Culture=neutral, PublicKeyToken=50cebf1cceb9d05e, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mono.Cecil.0.11.4\lib\net40\Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NuGet.Squirrel, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\squirrel.windows.2.0.1\lib\Net45\NuGet.Squirrel.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.4.3\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpCompress, Version=0.17.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpCompress.0.17.1\lib\net45\SharpCompress.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.8\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.8\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.8, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.8\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net48\zxing.presentation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MarioClasses\AdemicoClient.cs" />
+    <Compile Include="FormMario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormMario.Designer.cs">
+      <DependentUpon>FormMario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarioClasses\Helpers.cs" />
+    <Compile Include="MarioClasses\AdemicoSecrets.cs" />
+    <Compile Include="MenuClient\FormChooseCompany.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuClient\FormChooseCompany.Designer.cs">
+      <DependentUpon>FormChooseCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuClient\FormPeppolClientActions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuClient\FormPeppolClientActions.Designer.cs">
+      <DependentUpon>FormPeppolClientActions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuAdmin\FormAdminSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuAdmin\FormAdminSettings.Designer.cs">
+      <DependentUpon>FormAdminSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarioClasses\AdemicoModels.cs" />
+    <Compile Include="SharedForms\FormDataGridJsonPopUp.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SharedForms\FormDataGridJsonPopUp.Designer.cs">
+      <DependentUpon>FormDataGridJsonPopUp.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuAdmin\FormPeppolActions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuAdmin\FormPeppolActions.Designer.cs">
+      <DependentUpon>FormPeppolActions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MarioClasses\SharedGlobals.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataYearSettings.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataAccess.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\AddStoredProcedures.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataLedgerAccounts.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataTelebibContracts.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataContracts.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataSupplierInvoices.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataCustomerInvoices.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataSuppliers.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataCustomers.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\DataLedgers.cs" />
+    <Compile Include="MenuAdmin\FormMarioTools.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MenuAdmin\FormMarioTools.Designer.cs">
+      <DependentUpon>FormMarioTools.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MenuAdmin\SqlSyncTools\Helper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftLedgerAccount.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftContract.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftCorrespondence.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftCustomer.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftCustomerInvoice.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftLedger.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftMiscellaneous.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftProduct.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftProductGroup.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftSupplier.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftSupplierInvoice.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftTelebibContract.cs" />
+    <Compile Include="MenuAdmin\SqlSyncTools\Entities\VsoftYearSetting.cs" />
+    <EmbeddedResource Include="FormMario.resx">
+      <DependentUpon>FormMario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuClient\FormChooseCompany.resx">
+      <DependentUpon>FormChooseCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuClient\FormPeppolClientActions.resx">
+      <DependentUpon>FormPeppolClientActions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuAdmin\FormAdminSettings.resx">
+      <DependentUpon>FormAdminSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SharedForms\FormDataGridJsonPopUp.resx">
+      <DependentUpon>FormDataGridJsonPopUp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuAdmin\FormMarioTools.resx">
+      <DependentUpon>FormMarioTools.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MenuAdmin\FormPeppolActions.resx">
+      <DependentUpon>FormPeppolActions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MenuInfo\" />
+    <Folder Include="MenuVPE\" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADODB">
+      <Guid>{B691E011-1797-432E-907A-4D8C69339129}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>1</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="JRO">
+      <Guid>{AC3B8B4C-B6CA-11D1-9F31-00C04FC29D52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>6</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\squirrel.windows.2.0.1\build\squirrel.windows.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\squirrel.windows.2.0.1\build\squirrel.windows.props'))" />
+  </Target>
+</Project>
