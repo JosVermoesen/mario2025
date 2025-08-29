@@ -68,8 +68,10 @@
             this.DataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataGridView.Location = new System.Drawing.Point(3, 3);
             this.DataGridView.Name = "DataGridView";
+            this.DataGridView.ReadOnly = true;
             this.DataGridView.Size = new System.Drawing.Size(545, 320);
-            this.DataGridView.TabIndex = 0;
+            this.DataGridView.TabIndex = 0;            
+            this.DataGridView.SelectionChanged += new System.EventHandler(this.DataGridView_SelectionChanged);
             // 
             // TabJsonView
             // 
@@ -77,7 +79,7 @@
             this.TabJsonView.Location = new System.Drawing.Point(4, 22);
             this.TabJsonView.Name = "TabJsonView";
             this.TabJsonView.Padding = new System.Windows.Forms.Padding(3);
-            this.TabJsonView.Size = new System.Drawing.Size(792, 424);
+            this.TabJsonView.Size = new System.Drawing.Size(551, 326);
             this.TabJsonView.TabIndex = 1;
             this.TabJsonView.Text = "Json";
             this.TabJsonView.UseVisualStyleBackColor = true;
@@ -87,7 +89,7 @@
             this.RichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RichTextBox.Location = new System.Drawing.Point(3, 3);
             this.RichTextBox.Name = "RichTextBox";
-            this.RichTextBox.Size = new System.Drawing.Size(786, 418);
+            this.RichTextBox.Size = new System.Drawing.Size(545, 320);
             this.RichTextBox.TabIndex = 0;
             this.RichTextBox.Text = "";
             // 

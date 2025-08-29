@@ -12,7 +12,7 @@ namespace MarioApp.MarioMenu.Actions
         {
             InitializeComponent();
             LabelMimDataLocation.Text = SharedGlobals.MimDataLocation;
-            Text = "Mario2025 - Kies een bedrijf";
+            Text = "Mario2025 - Bedrijf Activeren";
             if (LabelMimDataLocation.Text.Length > 0)
             {
                 FillCompanyList();
@@ -113,14 +113,7 @@ namespace MarioApp.MarioMenu.Actions
                     int subDirLength = subdirectory.Length;
                     string subDirMap = subdirectory.Substring(subDirLength - 3);
                     ProcessMarntTxtFile(subdirectory, subDirMap);
-                } else
-                if (listType == "peppolOut")
-                {
-
-                    
                 }
-
-
             }
         }
         private void ProcessMarntTxtFile(string companyPath, string mapName)

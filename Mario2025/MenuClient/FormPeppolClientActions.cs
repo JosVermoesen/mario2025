@@ -2,6 +2,7 @@
 using MarioApp.MarioMenu.Admin;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -13,6 +14,8 @@ namespace MarioApp.MarioMenu.Actions
     public partial class FormPeppolClientActions : Form
     {
         private readonly HttpClient httpCheck;
+        private DialogResult answer;
+
         public Form FormDataGridJsonPopUp { get; set; }
 
         // Testing ADODB connection to marnt.mdv file
@@ -294,7 +297,7 @@ namespace MarioApp.MarioMenu.Actions
         }
 
         private void ButtonShowSharedGlobals_Click(object sender, EventArgs e)
-        {
+        {            
             MessageBox.Show(
                 $"Naam Bedrijf (KBO): {SharedGlobals.CompanyName}\n" +
                 $"Adres: {SharedGlobals.CompanyAddress}\n" +
@@ -307,8 +310,8 @@ namespace MarioApp.MarioMenu.Actions
                 $"Email Adres Bedrijf: {SharedGlobals.CompanyEmailAddress}\n" +
                 $"Contactpersoon: {SharedGlobals.CompanyContactPerson}\n" +
                 $"Email Adres Contactpersoon: {SharedGlobals.CompanyContactEmailAddress}\n\n" +
-                // $"DbJet Provider: {SharedGlobals.DbJetProvider}\n" +
-                $"Mapnummer Actief Bedrijf: {SharedGlobals.ActiveCompany}\n" +
+                $"Peppol Documenten te Verzenden: {SharedGlobals.PeppolOutFiles}\n\n" +
+            $"Mapnummer Actief Bedrijf: {SharedGlobals.ActiveCompany}\n" +
                 $"Inhoudsopgave Mar Mdv Bestand: {SharedGlobals.MarntMdvLocation}\n" +
                 $"Inhoudsopgave Mar Data: {SharedGlobals.MimDataLocation}\n",
                 "Variabele gegevens van actief bedrijf",
@@ -559,5 +562,54 @@ namespace MarioApp.MarioMenu.Actions
                 LabelFile.Text  = ListBoxDocumentsToSend.SelectedItem.ToString();
             }
         }
+
+        private void ButtonZipToCloud_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            ToolStripStatusLabel.Text = "Bezig...";
+            Application.DoEvents();
+
+            string sourceFolderPath = SharedGlobals.MimDataLocation + "\\" + SharedGlobals.ActiveCompany;
+            string cloudFolderPath = SharedGlobals.MarntCLoudArchiveLocation;
+            string companyFolderNumber = SharedGlobals.ActiveCompany; // Assuming this is the correct value for the required parameter
+
+            try
+            {
+                string zipResult = BackupHelper.ZipFolderToCloudDrive(sourceFolderPath, cloudFolderPath, companyFolderNumber);
+                Cursor.Current = Cursors.Default;
+                ToolStripStatusLabel.Text = "Ready";
+                Application.DoEvents();
+                
+                answer = MessageBox.Show(
+                    zipResult + "\n\nFolder openen?", "Zip naar Marnt Cloud",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question,
+                    MessageBoxDefaultButton.Button2);
+
+                if (answer == DialogResult.No) return;
+                OpenFolder(cloudFolderPath);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Fout bij het zippen van de map naar Marnt Cloud. Controleer of de Marnt Cloud locatie correct is ingesteld.", "Foutmelding", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Cursor.Current = Cursors.Default;
+            }
+            
+        }
+
+        public void OpenFolder(string folderPath)
+    {
+        if (System.IO.Directory.Exists(folderPath))
+        {
+            Process.Start("explorer.exe", folderPath);
+        }
+        else
+        {
+            // Optional: create the folder or show a message
+            System.IO.Directory.CreateDirectory(folderPath);
+            Process.Start("explorer.exe", folderPath);
+        }
     }
+
+}
 }

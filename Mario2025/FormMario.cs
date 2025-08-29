@@ -3,6 +3,7 @@ using MarioApp.MarioMenu.Admin;
 using Microsoft.VisualBasic;
 using System;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MarioApp
 {
@@ -48,7 +49,6 @@ namespace MarioApp
                 this.Height = Properties.Settings.Default.MainHeight;
             }
         }
-
         private void FormMario_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.MainTop = this.Top;
@@ -76,14 +76,74 @@ namespace MarioApp
         {
             bool isAdmin = Properties.Settings.Default.IsAdmin;
             AdminMenuItem.Visible = isAdmin; // Show or hide the Admin menu based on the IsAdmin setting             
+
+            // Load MimDataLocation from marIntegraal settings
+            // Value must contains "\marnt\data"
             string value = Interaction.GetSetting(
                 "marINTEGRAAL",       // AppName
                 "marIntegraal",     // Section
                 "Bedrijfsinhoudsopgave2025",
                 "" // Default if not found
                 ) ?? ""; // Ensure null-coalescing operator to handle possible null value.
-
+            
+            bool containsPath = value.ToLower().Contains(@"\marnt\data".ToLower());
+            if (!containsPath)
+            {
+                MessageBox.Show("De locatie van de bedrijfsinhoudsopgave is niet correct ingesteld.\n\nDuidt in marIntegraal een correcte locatie aan a.u.b.", "Fout in locatie", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Close();
+            }
             SharedGlobals.SetMimDataLocation(value);
+                        
+            // Load MarNT CloudLocation from settings
+            value = Interaction.GetSetting(
+                "marINTEGRAAL",       // AppName
+                "dnnInstellingen",     // Section
+                "Cloud",
+                "" // Default if not found
+                ) ?? ""; // Ensure null-coalescing operator to handle possible null value.
+
+            // A marNT Clouddrive Location must ends with  "\marnt"                        
+            containsPath = value.ToLower().EndsWith(@"\marnt".ToLower());
+            if (!containsPath)
+            {
+                MessageBox.Show("De locatie van de bedrijfsinhoudsopgave is niet correct ingesteld.\n\nDuidt in marIntegraal een correcte locatie aan a.u.b.", "Fout in locatie", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Close();
+            }
+            SharedGlobals.MarntCloudLocation = value;
+
+            // Load MarNT Archive CloudLocation from settings
+            value = Interaction.GetSetting(
+                "marINTEGRAAL",       // AppName
+                "dnnInstellingen",     // Section
+                "Archief",
+                "" // Default if not found
+                ) ?? ""; // Ensure null-coalescing operator to handle possible null value.
+
+            // A Clouddrive marNT archive Location must end with "\marnt\archief"                        
+            containsPath = value.ToLower().EndsWith(@"\marnt\archief".ToLower());
+            if (!containsPath)
+            {
+                MessageBox.Show("De locatie van de bedrijfsinhoudsopgave is niet correct ingesteld.\n\nDuidt in marIntegraal een correcte locatie aan a.u.b.", "Fout in locatie", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Close();
+            }
+            SharedGlobals.MarntCLoudArchiveLocation = value;
+
+            // A Clouddrive MarNT Mario Location must end with "\marnt\mario"                        
+            value = Interaction.GetSetting(
+                "marINTEGRAAL",       // AppName
+                "dnnInstellingen",     // Section
+                "Mario",
+                "" // Default if not found
+                ) ?? ""; // Ensure null-coalescing operator to handle possible null value.
+
+            // A Clouddrive marNT Location must end with "\marnt"                        
+            containsPath = value.ToLower().EndsWith(@"\marnt\mario".ToLower());
+            if (!containsPath)
+            {
+                MessageBox.Show("De locatie van de bedrijfsinhoudsopgave is niet correct ingesteld.\n\nDuidt in marIntegraal een correcte locatie aan a.u.b.", "Fout in locatie", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Close();
+            }
+            SharedGlobals.MarntCloudMarioLocation = value;
         }
 
         private void MenuItemPeppolActions_Click(object sender, EventArgs e)

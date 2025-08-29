@@ -9,6 +9,7 @@
             MimDataLocation = "";
             MarntMdvLocation = "";
             IsAdmin = false; // default to false
+            
             ActiveCompany = "";
             CompanyName = ""; // value s046 in marnt.mdv file is Company Name
             CompanyAddress = ""; // value s047 in marnt.mdv file is Company Address
@@ -21,9 +22,16 @@
             CompanyEmailAddress = ""; // value s295 in marnt.mdv file is Company Email Address
             CompanyContactPerson = ""; // value s052 in marnt.mdv file is Company Contact Person
             CompanyContactEmailAddress = ""; // value s050 in marnt.mdv file is Company Contact Email Address
-            PeppolOutFiles = 0;
+        
+            MarntCloudLocation = ""; // default values
+            MarntCLoudArchiveLocation = ""; // default values
+            MarntCloudMarioLocation = ""; // default values
 
+            PeppolOutFiles = 0;
         } // default values
+        public static string MarntCloudMarioLocation { get; set; } = ""; // default values
+        public static string MarntCLoudArchiveLocation { get; set; } = ""; // default values
+        public static string MarntCloudLocation { get; set; } = ""; // default values
         public static int PeppolOutFiles { get; set; } = 0; // default values
         public static string CompanyName { get; set; } = ""; // default values
         public static string CompanyAddress { get; set; } = ""; // default values

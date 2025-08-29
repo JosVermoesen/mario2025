@@ -175,6 +175,22 @@ namespace MarioApp.MarioMenu.Admin
             public string Receiver { get; set; }
             public List<object> Details { get; set; } = new List<object>();
         }
+
+        private void DataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            if (DataGridView.SelectedRows.Count > 0)
+            {
+                var selectedRow = DataGridView.SelectedRows[0];
+                var cellValues = new StringBuilder();
+                foreach (DataGridViewCell cell in selectedRow.Cells)
+                {
+                    cellValues.AppendLine($"{DataGridView.Columns[cell.ColumnIndex].HeaderText}: {cell.Value}");
+                }
+                MessageBox.Show(cellValues.ToString(), "Selected Row Details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        
     }
 }
 

@@ -38,7 +38,6 @@ namespace MarioApp
             SharedGlobals.CompanyContactPerson = ""; // default values
             SharedGlobals.CompanyContactEmailAddress = ""; // default values
         }
-
         public static void SetCompanyGlobals(string selectedCompany)
         {
             SharedGlobals.ActiveCompany = selectedCompany;
@@ -202,9 +201,9 @@ namespace MarioApp
         }
     }
 
-    public static class BackupHelper
+    public class BackupHelper
     {
-        public static void BackupFolderToOneDrive(string sourceFolderPath, string cloudFolderPath, string companyFolderNumber)
+        public static string ZipFolderToCloudDrive(string sourceFolderPath, string cloudFolderPath, string companyFolderNumber)
         {
             if (!Directory.Exists(sourceFolderPath))
                 throw new DirectoryNotFoundException($"Source folder not found: {sourceFolderPath}");
@@ -212,20 +211,27 @@ namespace MarioApp
             if (!Directory.Exists(cloudFolderPath))
                 throw new DirectoryNotFoundException($"Cloud folder not found: {cloudFolderPath}");
 
-            string zipFileName = $"{Path.GetFileName(sourceFolderPath)}_backup_{DateTime.Now:yyyyMMdd_HHmmss}.zip";
-            string tempZipPath = Path.Combine(Path.GetTempPath(), zipFileName);
-            string destZipPath = Path.Combine(cloudFolderPath, zipFileName);
+            try
+            {
+                string zipFileName = $"{Path.GetFileName(sourceFolderPath)}_backup_{DateTime.Now:yyyyMMdd_HHmmss}.zip";
+                string tempZipPath = Path.Combine(Path.GetTempPath(), zipFileName);
+                string destZipPath = Path.Combine(cloudFolderPath, zipFileName);
 
-            // Create zip in temp directory
-            if (File.Exists(tempZipPath))
-                File.Delete(tempZipPath);
+                // Create zip in temp directory
+                if (File.Exists(tempZipPath))
+                    File.Delete(tempZipPath);
 
-            ZipFile.CreateFromDirectory(sourceFolderPath, tempZipPath, CompressionLevel.Optimal, false);
+                ZipFile.CreateFromDirectory(sourceFolderPath, tempZipPath, CompressionLevel.Optimal, false);
 
-            // Copy to OneDrive sync folder
-            File.Copy(tempZipPath, destZipPath, true);
+                // Copy to OneDrive sync folder
+                File.Copy(tempZipPath, destZipPath, true);
 
-            Console.WriteLine($"Backup created and copied to OneDrive: {destZipPath}");
+                return destZipPath;
+            }
+            catch (Exception)
+            {
+                return "Bedrijfsdata is nog in gebruik voor dit bedrijf. Eerst marIntegraal afsluiten a.u.b.";
+            }            
         }
     }
 

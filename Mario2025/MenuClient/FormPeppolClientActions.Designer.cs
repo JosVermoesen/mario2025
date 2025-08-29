@@ -64,6 +64,7 @@
             this.ButtonClose = new System.Windows.Forms.Button();
             this.StatusStrip = new System.Windows.Forms.StatusStrip();
             this.ToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.ButtonZipToCloud = new System.Windows.Forms.Button();
             this.TabControlVariousActions.SuspendLayout();
             this.TabActions.SuspendLayout();
             this.TabNotifications.SuspendLayout();
@@ -89,6 +90,7 @@
             // 
             // TabActions
             // 
+            this.TabActions.Controls.Add(this.ButtonZipToCloud);
             this.TabActions.Controls.Add(this.ButtonShowSharedGlobals);
             this.TabActions.Controls.Add(this.ButtonGetPeppolRegistrations);
             this.TabActions.Controls.Add(this.TextBoxCountryCode);
@@ -112,9 +114,9 @@
             // 
             // ButtonShowSharedGlobals
             // 
-            this.ButtonShowSharedGlobals.Location = new System.Drawing.Point(338, 19);
+            this.ButtonShowSharedGlobals.Location = new System.Drawing.Point(454, 183);
             this.ButtonShowSharedGlobals.Name = "ButtonShowSharedGlobals";
-            this.ButtonShowSharedGlobals.Size = new System.Drawing.Size(114, 41);
+            this.ButtonShowSharedGlobals.Size = new System.Drawing.Size(111, 41);
             this.ButtonShowSharedGlobals.TabIndex = 28;
             this.ButtonShowSharedGlobals.Text = "Gegevens Tonen van Actief Bedrijf";
             this.ButtonShowSharedGlobals.UseVisualStyleBackColor = true;
@@ -122,9 +124,9 @@
             // 
             // ButtonGetPeppolRegistrations
             // 
-            this.ButtonGetPeppolRegistrations.Location = new System.Drawing.Point(19, 251);
+            this.ButtonGetPeppolRegistrations.Location = new System.Drawing.Point(320, 232);
             this.ButtonGetPeppolRegistrations.Name = "ButtonGetPeppolRegistrations";
-            this.ButtonGetPeppolRegistrations.Size = new System.Drawing.Size(158, 23);
+            this.ButtonGetPeppolRegistrations.Size = new System.Drawing.Size(111, 41);
             this.ButtonGetPeppolRegistrations.TabIndex = 27;
             this.ButtonGetPeppolRegistrations.Text = "Registratie(s) Opzoeken";
             this.ButtonGetPeppolRegistrations.UseVisualStyleBackColor = true;
@@ -141,21 +143,21 @@
             // 
             this.TextBoxRegScheme.Location = new System.Drawing.Point(100, 109);
             this.TextBoxRegScheme.Name = "TextBoxRegScheme";
-            this.TextBoxRegScheme.Size = new System.Drawing.Size(352, 20);
+            this.TextBoxRegScheme.Size = new System.Drawing.Size(331, 20);
             this.TextBoxRegScheme.TabIndex = 23;
             // 
             // TextBoxRegIdentifier
             // 
             this.TextBoxRegIdentifier.Location = new System.Drawing.Point(100, 139);
             this.TextBoxRegIdentifier.Name = "TextBoxRegIdentifier";
-            this.TextBoxRegIdentifier.Size = new System.Drawing.Size(352, 20);
+            this.TextBoxRegIdentifier.Size = new System.Drawing.Size(331, 20);
             this.TextBoxRegIdentifier.TabIndex = 24;
             // 
             // TextBoxSupportedDocument
             // 
             this.TextBoxSupportedDocument.Location = new System.Drawing.Point(100, 172);
             this.TextBoxSupportedDocument.Name = "TextBoxSupportedDocument";
-            this.TextBoxSupportedDocument.Size = new System.Drawing.Size(352, 20);
+            this.TextBoxSupportedDocument.Size = new System.Drawing.Size(331, 20);
             this.TextBoxSupportedDocument.TabIndex = 25;
             // 
             // TextBoxLegalEntityId
@@ -438,6 +440,16 @@
             this.ToolStripStatusLabel.Size = new System.Drawing.Size(39, 17);
             this.ToolStripStatusLabel.Text = "Ready";
             // 
+            // ButtonZipToCloud
+            // 
+            this.ButtonZipToCloud.Location = new System.Drawing.Point(454, 230);
+            this.ButtonZipToCloud.Name = "ButtonZipToCloud";
+            this.ButtonZipToCloud.Size = new System.Drawing.Size(111, 41);
+            this.ButtonZipToCloud.TabIndex = 29;
+            this.ButtonZipToCloud.Text = "Veiligheidskopij  van Actief Bedrijf maken";
+            this.ButtonZipToCloud.UseVisualStyleBackColor = true;
+            this.ButtonZipToCloud.Click += new System.EventHandler(this.ButtonZipToCloud_Click);
+            // 
             // FormPeppolClientActions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -505,5 +517,6 @@
         private System.Windows.Forms.RadioButton RadioButtonAll;
         private System.Windows.Forms.Button ButtonShowSharedGlobals;
         private System.Windows.Forms.ListBox ListBoxDocumentsToSend;
+        private System.Windows.Forms.Button ButtonZipToCloud;
     }
 }

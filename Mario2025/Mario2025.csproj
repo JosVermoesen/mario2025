@@ -28,12 +28,12 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://clickonce.vsoft.be/mario2025/</InstallUrl>
-    <ProductName>Mario2025App</ProductName>
+    <ProductName>Mario2025</ProductName>
     <PublisherName>Vsoft.be</PublisherName>
     <SuiteName>marIntegraal.NT</SuiteName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>3</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -70,10 +70,10 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>
@@ -188,15 +188,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MarioClasses\AdemicoClient.cs" />
+    <Compile Include="Classes\Ademico\AdemicoClient.cs" />
     <Compile Include="FormMario.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormMario.Designer.cs">
       <DependentUpon>FormMario.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarioClasses\Helpers.cs" />
-    <Compile Include="MarioClasses\AdemicoSecrets.cs" />
+    <Compile Include="Classes\Helpers.cs" />
+    <Compile Include="Classes\Ademico\AdemicoSecrets.cs" />
     <Compile Include="MenuClient\FormChooseCompany.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,7 +215,7 @@
     <Compile Include="MenuAdmin\FormAdminSettings.Designer.cs">
       <DependentUpon>FormAdminSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarioClasses\AdemicoModels.cs" />
+    <Compile Include="Classes\Ademico\AdemicoModels.cs" />
     <Compile Include="SharedForms\FormDataGridJsonPopUp.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,7 +228,7 @@
     <Compile Include="MenuAdmin\FormPeppolActions.Designer.cs">
       <DependentUpon>FormPeppolActions.cs</DependentUpon>
     </Compile>
-    <Compile Include="MarioClasses\SharedGlobals.cs" />
+    <Compile Include="Classes\SharedGlobals.cs" />
     <Compile Include="MenuAdmin\SqlSyncTools\DataYearSettings.cs" />
     <Compile Include="MenuAdmin\SqlSyncTools\DataAccess.cs" />
     <Compile Include="MenuAdmin\SqlSyncTools\AddStoredProcedures.cs" />
