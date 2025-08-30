@@ -16,7 +16,7 @@ Mario stands for M.A.R. Input Output Data transfer of our accounting data to dif
 
 ## Ademico Peppol API Testing
 
-In the MarioClasses folder you neet for testing to add your secrets in an AdemicoSecrets.cs file like this:
+In the MarioClasses folder for testing you need to add your secrets in an AdemicoSecrets.cs file like this:
 
 ```csharp
 namespace MarioApp.MarioClasses
